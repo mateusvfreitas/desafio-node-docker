@@ -1,5 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
+const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
+
 
 const app = express();
 const port = 3000;
@@ -14,7 +16,9 @@ const dbConfig = {
 const connection = mysql.createConnection(dbConfig)
 
 app.get('/', (req, res) => {
-    const name = "Teste"
+    // const name = "Teste"
+    const name = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
+
 
     connection.query(`INSERT INTO people (nome) VALUES ('${name}')`)
 
