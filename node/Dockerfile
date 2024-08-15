@@ -1,10 +1,12 @@
 FROM node:15 AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/
+
+COPY package*.json ./
+
+RUN npm install
 
 COPY . .
-
-RUN npm i
 
 EXPOSE 3000
 

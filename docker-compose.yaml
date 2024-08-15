@@ -16,10 +16,13 @@ services:
       context: ./node
     container_name: app
     volumes:
-      - ./node/:/usr/src/app
+      - ./node/:/usr/src/app/
+      - /usr/src/app/node_modules
+    # command: "npm install && npm start"
     tty: true
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - node-network
 
@@ -34,6 +37,11 @@ services:
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
     networks:
       - node-network
 
